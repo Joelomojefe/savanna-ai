@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savanna AI VSCode Extension</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .demo-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        .demo-link {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 20px 32px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        .demo-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 60px 0;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 32px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 24px;
+        }
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+        }
+        .download-section {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin: 40px 0;
+        }
+        .download-btn {
+            background: #10b981;
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Savanna AI</h1>
+        <p class="subtitle">Professional GitHub Copilot-Style VSCode Extension</p>
+        
+        <div class="demo-links">
+            <a href="/settings-enhanced" class="demo-link">
+                🎨 Professional Settings Interface
+            </a>
+            <a href="/sidebar-demo" class="demo-link">
+                💬 AI Chat Sidebar
+            </a>
+            <a href="/download-project" class="demo-link">
+                📦 Download Project
+            </a>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🤖 Multi-Provider AI</h3>
+                <ul class="feature-list">
+                    <li>OpenAI GPT-4 & GPT-3.5</li>
+                    <li>Anthropic Claude</li>
+                    <li>Google Gemini</li>
+                    <li>Cohere Models</li>
+                    <li>Secure API key storage</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>⚡ GitHub Copilot Features</h3>
+                <ul class="feature-list">
+                    <li>Code completion & suggestions</li>
+                    <li>Explain & document code</li>
+                    <li>Generate tests & reviews</li>
+                    <li>Debug & fix issues</li>
+                    <li>70+ Copilot commands</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🎯 Professional Interface</h3>
+                <ul class="feature-list">
+                    <li>GitHub Copilot-style design</li>
+                    <li>Dark/light mode toggle</li>
+                    <li>Responsive layouts</li>
+                    <li>Smooth animations</li>
+                    <li>Professional typography</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2>Ready to Install?</h2>
+            <p>Download the complete VSCode extension project and install it in your development environment.</p>
+            <a href="/download-project" class="download-btn">Download Savanna Extension</a>
+        </div>
+    </div>
+</body>
+</html>
