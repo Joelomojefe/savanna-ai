@@ -34,6 +34,11 @@ export class ChatProvider {
 
         this.chatPanel.webview.html = this.getChatWebviewContent();
         this.setupChatMessageHandler();
+        
+        // Send initial provider info when chat opens
+        setTimeout(() => {
+            this.sendProviderInfo();
+        }, 100);
 
         this.chatPanel.onDidDispose(() => {
             this.chatPanel = undefined;
@@ -58,6 +63,10 @@ export class ChatProvider {
                 case 'clear':
                     this.clearChatHistory();
                     break;
+                case 'newChat':
+                    this.clearChatHistory();
+                    this.sendMessage('newChatStarted', {});
+                    break;
                 case 'switchProvider':
                     await this.providerManager.setCurrentProvider(message.provider);
                     this.sendMessage('providerChanged', {
@@ -66,6 +75,9 @@ export class ChatProvider {
                     break;
                 case 'explainCode':
                     await this.explainSelectedCode();
+                    break;
+                case 'getProviders':
+                    this.sendProviderInfo();
                     break;
             }
         });
@@ -132,6 +144,18 @@ export class ChatProvider {
         this.sendMessage('historyCleared', {});
     }
 
+    private sendProviderInfo(): void {
+        const providers = this.providerManager.getAvailableProviders();
+        const currentProvider = this.providerManager.getCurrentProviderName();
+        const currentModel = this.providerManager.getCurrentProvider()?.getCurrentModel() || '';
+        
+        this.sendMessage('providersInfo', {
+            providers,
+            currentProvider,
+            currentModel
+        });
+    }
+
     private sendMessage(type: string, data: any): void {
         if (this.chatPanel) {
             this.chatPanel.webview.postMessage({ type, ...data });
@@ -164,6 +188,13 @@ export class ChatProvider {
                         <span id="current-model"></span>
                     </div>
                     <div id="header-actions">
+                        <button id="new-chat" title="Start a new chat">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                                <path d="M12 7v6m-3-3h6"/>
+                            </svg>
+                            New Chat
+                        </button>
                         <button id="clear-chat" title="Clear chat history">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
