@@ -35,6 +35,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                 case 'sendMessage':
                     await this.handleChatMessage(data.content);
                     break;
+                case 'newChat':
+                    this.clearChat();
+                    this.sendMessage('newChatStarted', {});
+                    break;
                 case 'clearChat':
                     this.clearChat();
                     break;
@@ -42,13 +46,25 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                     await this.explainSelectedCode();
                     break;
                 case 'switchProvider':
-                    await this.providerManager.switchProvider();
+                    if (data.provider) {
+                        await this.providerManager.setCurrentProvider(data.provider);
+                    } else {
+                        await this.providerManager.switchProvider();
+                    }
                     this.updateProviderInfo();
+                    break;
+                case 'getProviders':
+                    this.sendProviderInfo();
                     break;
             }
         });
 
         this.updateProviderInfo();
+        
+        // Send initial provider info
+        setTimeout(() => {
+            this.sendProviderInfo();
+        }, 100);
     }
 
     private async handleChatMessage(content: string) {
@@ -112,6 +128,18 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         });
     }
 
+    private sendProviderInfo() {
+        const providers = this.providerManager.getAvailableProviders();
+        const currentProvider = this.providerManager.getCurrentProviderName();
+        const currentModel = this.providerManager.getCurrentProvider()?.getCurrentModel() || '';
+        
+        this.sendMessage('providersInfo', {
+            providers,
+            currentProvider,
+            currentModel
+        });
+    }
+
     private sendMessage(type: string, data: any) {
         if (this._view) {
             this._view.webview.postMessage({ type, data });
@@ -136,13 +164,20 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                 <div class="sidebar-container">
                     <div class="header">
                         <div class="provider-status">
-                            <div class="provider-indicator">
-                                <span class="status-dot" id="statusDot"></span>
-                                <span class="provider-name" id="providerName">Not configured</span>
+                            <div class="provider-info">
+                                <select id="provider-select">
+                                    <option value="">Select Provider...</option>
+                                </select>
+                                <span id="current-model"></span>
                             </div>
-                            <button class="icon-button" id="switchProvider" title="Switch Provider">
-                                <span class="codicon codicon-arrow-swap"></span>
-                            </button>
+                            <div class="header-actions">
+                                <button class="icon-button" id="new-chat" title="Start a new chat">
+                                    <span class="codicon codicon-comment-discussion"></span>
+                                </button>
+                                <button class="icon-button" id="clear-chat" title="Clear chat history">
+                                    <span class="codicon codicon-clear-all"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 

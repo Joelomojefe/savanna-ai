@@ -7,11 +7,11 @@
     let sendButton;
     let chatMessages;
     let loadingIndicator;
-    let statusDot;
-    let providerName;
-    let switchProviderBtn;
-    let explainCodeBtn;
+    let providerSelect;
+    let currentModelSpan;
+    let newChatBtn;
     let clearChatBtn;
+    let explainCodeBtn;
     
     // State
     let isWaiting = false;
