@@ -279,37 +279,7 @@ body {
     box-sizing: border-box;
 }
 
-#quick-actions {
-    display: none;
-}
 
-.quick-action {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-    color: var(--vscode-button-secondaryForeground);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 8px 14px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(10px);
-}
-
-.quick-action:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.quick-action:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-}
 
 #input-wrapper {
     display: flex;
