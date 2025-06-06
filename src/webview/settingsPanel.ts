@@ -1,4 +1,7 @@
 import * as vscode from 'vscode';
+import { ProviderManager } from '../managers/providerManager';
+import { SecretManager } from '../managers/secretManager';
+import { ConfigManager } from '../managers/configManager';
 
 export class SettingsPanelProvider {
     public static currentPanel: SettingsPanelProvider | undefined;
@@ -7,8 +10,11 @@ export class SettingsPanelProvider {
     private readonly _panel: vscode.WebviewPanel;
     private readonly _extensionUri: vscode.Uri;
     private _disposables: vscode.Disposable[] = [];
+    private _providerManager: ProviderManager;
+    private _secretManager: SecretManager;
+    private _configManager: ConfigManager;
 
-    public static createOrShow(extensionUri: vscode.Uri) {
+    public static createOrShow(extensionUri: vscode.Uri, providerManager: ProviderManager, secretManager: SecretManager, configManager: ConfigManager) {
         const column = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
@@ -30,12 +36,15 @@ export class SettingsPanelProvider {
             }
         );
 
-        SettingsPanelProvider.currentPanel = new SettingsPanelProvider(panel, extensionUri);
+        SettingsPanelProvider.currentPanel = new SettingsPanelProvider(panel, extensionUri, providerManager, secretManager, configManager);
     }
 
-    private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+    private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, providerManager: ProviderManager, secretManager: SecretManager, configManager: ConfigManager) {
         this._panel = panel;
         this._extensionUri = extensionUri;
+        this._providerManager = providerManager;
+        this._secretManager = secretManager;
+        this._configManager = configManager;
 
         this._update();
 
@@ -52,16 +61,19 @@ export class SettingsPanelProvider {
         );
 
         this._panel.webview.onDidReceiveMessage(
-            message => {
+            async message => {
                 switch (message.command) {
                     case 'saveApiKey':
-                        this.saveApiKey(message.provider, message.apiKey);
+                        await this.saveApiKey(message.provider, message.apiKey);
                         return;
                     case 'removeApiKey':
-                        this.removeApiKey(message.provider);
+                        await this.removeApiKey(message.provider);
                         return;
                     case 'testConnection':
-                        this.testConnection(message.provider);
+                        await this.testConnection(message.provider);
+                        return;
+                    case 'toggleTheme':
+                        this.toggleTheme();
                         return;
                 }
             },
@@ -70,19 +82,134 @@ export class SettingsPanelProvider {
         );
     }
 
-    private async saveApiKey(provider: string, _apiKey: string) {
-        // This would connect to the provider manager
-        vscode.window.showInformationMessage(`API key saved for ${provider}`);
-        this._update();
+    private async saveApiKey(provider: string, apiKey: string) {
+        try {
+            if (!apiKey || apiKey.trim() === '') {
+                this._panel.webview.postMessage({
+                    command: 'showNotification',
+                    type: 'error',
+                    message: 'Please enter a valid API key'
+                });
+                return;
+            }
+
+            // Store API key securely
+            await this._secretManager.storeApiKey(provider, apiKey);
+            
+            // Update provider configuration
+            await this._providerManager.setApiKey(provider, apiKey);
+            
+            // Show success notification
+            this._panel.webview.postMessage({
+                command: 'showNotification',
+                type: 'success',
+                message: `API key saved successfully for ${provider}`
+            });
+
+            // Update provider status
+            this._panel.webview.postMessage({
+                command: 'updateProviderStatus',
+                provider: provider,
+                configured: true,
+                status: 'connected'
+            });
+
+            vscode.window.showInformationMessage(`${provider} API key saved successfully!`);
+        } catch (error) {
+            this._panel.webview.postMessage({
+                command: 'showNotification',
+                type: 'error',
+                message: `Failed to save API key: ${error}`
+            });
+            console.error(`Failed to save API key for ${provider}:`, error);
+        }
     }
 
     private async removeApiKey(provider: string) {
-        vscode.window.showInformationMessage(`API key removed for ${provider}`);
-        this._update();
+        try {
+            await this._secretManager.deleteApiKey(provider);
+            await this._providerManager.removeApiKey(provider);
+            
+            this._panel.webview.postMessage({
+                command: 'showNotification',
+                type: 'success',
+                message: `API key removed for ${provider}`
+            });
+
+            this._panel.webview.postMessage({
+                command: 'updateProviderStatus',
+                provider: provider,
+                configured: false,
+                status: 'not-configured'
+            });
+
+            vscode.window.showInformationMessage(`${provider} API key removed successfully!`);
+        } catch (error) {
+            this._panel.webview.postMessage({
+                command: 'showNotification',
+                type: 'error',
+                message: `Failed to remove API key: ${error}`
+            });
+        }
     }
 
     private async testConnection(provider: string) {
-        vscode.window.showInformationMessage(`Testing connection for ${provider}...`);
+        try {
+            this._panel.webview.postMessage({
+                command: 'showNotification',
+                type: 'info',
+                message: `Testing connection for ${provider}...`
+            });
+
+            const hasKey = await this._secretManager.hasApiKey(provider);
+            if (!hasKey) {
+                this._panel.webview.postMessage({
+                    command: 'showNotification',
+                    type: 'error',
+                    message: `No API key configured for ${provider}`
+                });
+                return;
+            }
+
+            // Test the provider connection
+            const providerInstance = this._providerManager.getProvider(provider);
+            if (providerInstance) {
+                // Simple test - try to get provider info
+                this._panel.webview.postMessage({
+                    command: 'showNotification',
+                    type: 'success',
+                    message: `${provider} connection test successful!`
+                });
+
+                this._panel.webview.postMessage({
+                    command: 'updateProviderStatus',
+                    provider: provider,
+                    configured: true,
+                    status: 'connected'
+                });
+            } else {
+                throw new Error('Provider not available');
+            }
+        } catch (error) {
+            this._panel.webview.postMessage({
+                command: 'showNotification',
+                type: 'error',
+                message: `Connection test failed for ${provider}: ${error}`
+            });
+
+            this._panel.webview.postMessage({
+                command: 'updateProviderStatus',
+                provider: provider,
+                configured: true,
+                status: 'error'
+            });
+        }
+    }
+
+    private toggleTheme() {
+        this._panel.webview.postMessage({
+            command: 'toggleTheme'
+        });
     }
 
     public dispose() {

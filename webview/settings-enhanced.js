@@ -32,6 +32,29 @@
         updateUI();
     });
 
+    // Listen for messages from VSCode extension
+    window.addEventListener('message', event => {
+        const message = event.data;
+        
+        switch (message.command) {
+            case 'showNotification':
+                showNotification(message.message, message.type);
+                break;
+            case 'updateProviderStatus':
+                updateProviderStatus(message.provider, message.configured);
+                if (message.status) {
+                    updateStatusIndicator(message.provider, message.status);
+                }
+                // Stop loading state
+                const card = document.querySelector(`[data-provider="${message.provider}"]`);
+                if (card) setCardLoading(card, false);
+                break;
+            case 'toggleTheme':
+                toggleTheme();
+                break;
+        }
+    });
+
     function initializeElements() {
         themeToggle = document.getElementById('theme-toggle');
         temperatureSlider = document.getElementById('temperature');
@@ -157,26 +180,34 @@
     function saveProviderConfig(provider, card) {
         const keyInput = card.querySelector('.api-key-input');
         const modelSelect = card.querySelector('.form-select');
+        const apiKey = keyInput.value.trim();
         
-        if (!keyInput.value.trim()) {
+        if (!apiKey) {
             showNotification('Please enter an API key', 'error');
             return;
         }
 
         setCardLoading(card, true);
 
-        // Simulate API key validation
-        setTimeout(() => {
-            providers[provider].configured = true;
-            providers[provider].model = modelSelect.value;
-            
-            updateProviderStatus(provider, true);
-            setCardLoading(card, false);
-            
-            showNotification(`${getProviderName(provider)} configured successfully`, 'success');
-            
-            if (settings.autoSave) saveSettings();
-        }, 1500);
+        // Send to VSCode extension
+        if (typeof vscode !== 'undefined') {
+            vscode.postMessage({
+                command: 'saveApiKey',
+                provider: provider,
+                apiKey: apiKey,
+                model: modelSelect.value
+            });
+        } else {
+            // Fallback for demo
+            setTimeout(() => {
+                providers[provider].configured = true;
+                providers[provider].model = modelSelect.value;
+                updateProviderStatus(provider, true);
+                setCardLoading(card, false);
+                showNotification(`${getProviderName(provider)} configured successfully`, 'success');
+                if (settings.autoSave) saveSettings();
+            }, 1500);
+        }
     }
 
     function testProviderConnection(provider, card) {
@@ -189,32 +220,46 @@
 
         setCardLoading(card, true);
 
-        // Simulate connection test
-        setTimeout(() => {
-            const success = Math.random() > 0.3; // 70% success rate for demo
-            
-            setCardLoading(card, false);
-            
-            if (success) {
-                showNotification(`${getProviderName(provider)} connection successful`, 'success');
-            } else {
-                showNotification(`${getProviderName(provider)} connection failed`, 'error');
-            }
-        }, 2000);
+        // Send to VSCode extension
+        if (typeof vscode !== 'undefined') {
+            vscode.postMessage({
+                command: 'testConnection',
+                provider: provider
+            });
+        } else {
+            // Fallback for demo
+            setTimeout(() => {
+                const success = Math.random() > 0.3;
+                setCardLoading(card, false);
+                if (success) {
+                    showNotification(`${getProviderName(provider)} connection successful`, 'success');
+                } else {
+                    showNotification(`${getProviderName(provider)} connection failed`, 'error');
+                }
+            }, 2000);
+        }
     }
 
     function removeProviderConfig(provider, card) {
         if (confirm(`Remove ${getProviderName(provider)} configuration?`)) {
-            providers[provider].configured = false;
+            setCardLoading(card, true);
             
-            const keyInput = card.querySelector('.api-key-input');
-            keyInput.value = '';
-            
-            updateProviderStatus(provider, false);
-            
-            showNotification(`${getProviderName(provider)} removed`, 'warning');
-            
-            if (settings.autoSave) saveSettings();
+            // Send to VSCode extension
+            if (typeof vscode !== 'undefined') {
+                vscode.postMessage({
+                    command: 'removeApiKey',
+                    provider: provider
+                });
+            } else {
+                // Fallback for demo
+                providers[provider].configured = false;
+                const keyInput = card.querySelector('.api-key-input');
+                keyInput.value = '';
+                updateProviderStatus(provider, false);
+                setCardLoading(card, false);
+                showNotification(`${getProviderName(provider)} removed`, 'warning');
+                if (settings.autoSave) saveSettings();
+            }
         }
     }
 
