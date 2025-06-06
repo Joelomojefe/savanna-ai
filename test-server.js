@@ -41,22 +41,18 @@ const server = http.createServer((req, res) => {
             serve404(res);
         }
     } else if (req.url === '/download-project') {
-        const { exec } = require('child_process');
-        exec('tar -czf project-download.tar.gz src out webview package.json tsconfig.json INSTALLATION.md', (error) => {
-            if (error) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Error creating archive');
-                return;
-            }
-            
+        const filePath = 'savanna-extension-github.tar.gz';
+        if (fs.existsSync(filePath)) {
             res.writeHead(200, {
                 'Content-Type': 'application/gzip',
-                'Content-Disposition': 'attachment; filename="savanna-extension.tar.gz"'
+                'Content-Disposition': 'attachment; filename="savanna-extension-github.tar.gz"'
             });
-            
-            const fileStream = fs.createReadStream('project-download.tar.gz');
+            const fileStream = fs.createReadStream(filePath);
             fileStream.pipe(res);
-        });
+        } else {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Package not found');
+        }
     } else if (req.url === '/extension-info') {
         const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
         res.writeHead(200, { 'Content-Type': 'application/json' });
