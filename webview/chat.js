@@ -4,12 +4,11 @@ const vscode = acquireVsCodeApi();
 // DOM elements
 const providerSelect = document.getElementById('provider-select');
 const currentModelSpan = document.getElementById('current-model');
+const newChatBtn = document.getElementById('new-chat');
 const clearChatBtn = document.getElementById('clear-chat');
 const chatMessages = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
 const sendButton = document.getElementById('send-button');
-const explainCodeBtn = document.getElementById('explain-code');
-const reviewCodeBtn = document.getElementById('review-code');
 const charCounter = document.getElementById('char-counter');
 const typingIndicator = document.getElementById('typing-indicator');
 
@@ -58,27 +57,21 @@ function setupEventListeners() {
         }
     });
 
+    // New chat
+    newChatBtn.addEventListener('click', function() {
+        if (confirm('Start a new chat? This will clear the current conversation.')) {
+            vscode.postMessage({ type: 'newChat' });
+            clearMessages();
+            addMessage('system', 'New chat started. How can I help you?');
+        }
+    });
+
     // Clear chat
     clearChatBtn.addEventListener('click', function() {
         if (confirm('Clear chat history?')) {
             vscode.postMessage({ type: 'clear' });
             clearMessages();
         }
-    });
-
-    // Quick actions
-    explainCodeBtn.addEventListener('click', function() {
-        vscode.postMessage({ type: 'explainCode' });
-    });
-
-    reviewCodeBtn.addEventListener('click', function() {
-        const message = "Please review the code I have selected and provide feedback on:\n" +
-                       "- Code quality and best practices\n" +
-                       "- Potential bugs or issues\n" +
-                       "- Performance improvements\n" +
-                       "- Security considerations";
-        chatInput.value = message;
-        chatInput.focus();
     });
 
     // Auto-resize textarea
@@ -283,8 +276,25 @@ window.addEventListener('message', event => {
         case 'historyCleared':
             clearMessages();
             break;
+            
+        case 'providersInfo':
+            providers = message.providers.map(name => ({
+                name: name,
+                configured: true,
+                currentModel: name === message.currentProvider ? message.currentModel : ''
+            }));
+            currentProvider = message.currentProvider;
+            updateUI();
+            break;
+            
+        case 'newChatStarted':
+            clearMessages();
+            break;
     }
 });
+
+// Request provider info on load
+vscode.postMessage({ type: 'getProviders' });
 
 // Auto-focus input on load
 chatInput.focus();
