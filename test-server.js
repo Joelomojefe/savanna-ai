@@ -41,11 +41,11 @@ const server = http.createServer((req, res) => {
             serve404(res);
         }
     } else if (req.url === '/download-project') {
-        const filePath = 'savanna-extension-github.tar.gz';
+        const filePath = 'savanna-extension-updated.tar.gz';
         if (fs.existsSync(filePath)) {
             res.writeHead(200, {
                 'Content-Type': 'application/gzip',
-                'Content-Disposition': 'attachment; filename="savanna-extension-github.tar.gz"'
+                'Content-Disposition': 'attachment; filename="savanna-extension-updated.tar.gz"'
             });
             const fileStream = fs.createReadStream(filePath);
             fileStream.pipe(res);
