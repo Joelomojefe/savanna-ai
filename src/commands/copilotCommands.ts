@@ -273,7 +273,7 @@ export function registerCopilotCommands(
     // Register all commands
     disposables.push(
         // Core Commands
-        vscode.commands.registerCommand('savanna.openSettings', () => SettingsPanelProvider.createOrShow(context.extensionUri)),
+        vscode.commands.registerCommand('savanna.openSettings', () => SettingsPanelProvider.createOrShow(context.extensionUri, providerManager, secretManager, configManager)),
         vscode.commands.registerCommand('savanna.openChat', () => chatProvider.openChat()),
         vscode.commands.registerCommand('savanna.switchProvider', () => providerManager.switchProvider()),
 

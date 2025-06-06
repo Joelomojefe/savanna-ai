@@ -12,9 +12,8 @@ export class SettingsPanelProvider {
     private _disposables: vscode.Disposable[] = [];
     private _providerManager: ProviderManager;
     private _secretManager: SecretManager;
-    private _configManager: ConfigManager;
 
-    public static createOrShow(extensionUri: vscode.Uri, providerManager: ProviderManager, secretManager: SecretManager, configManager: ConfigManager) {
+    public static createOrShow(extensionUri: vscode.Uri, providerManager: ProviderManager, secretManager: SecretManager, _configManager: ConfigManager) {
         const column = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
@@ -36,15 +35,14 @@ export class SettingsPanelProvider {
             }
         );
 
-        SettingsPanelProvider.currentPanel = new SettingsPanelProvider(panel, extensionUri, providerManager, secretManager, configManager);
+        SettingsPanelProvider.currentPanel = new SettingsPanelProvider(panel, extensionUri, providerManager, secretManager);
     }
 
-    private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, providerManager: ProviderManager, secretManager: SecretManager, configManager: ConfigManager) {
+    private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, providerManager: ProviderManager, secretManager: SecretManager) {
         this._panel = panel;
         this._extensionUri = extensionUri;
         this._providerManager = providerManager;
         this._secretManager = secretManager;
-        this._configManager = configManager;
 
         this._update();
 

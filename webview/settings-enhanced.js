@@ -294,6 +294,25 @@
         return names[provider] || provider;
     }
 
+    function updateStatusIndicator(provider, status) {
+        const statusIndicator = document.querySelector(`#${provider}-status .status-indicator`);
+        const statusText = document.querySelector(`#${provider}-status .status-text`);
+        
+        if (statusIndicator && statusText) {
+            statusIndicator.classList.remove('connected', 'error');
+            
+            if (status === 'connected') {
+                statusIndicator.classList.add('connected');
+                statusText.textContent = 'Connected';
+            } else if (status === 'error') {
+                statusIndicator.classList.add('error');
+                statusText.textContent = 'Connection failed';
+            } else {
+                statusText.textContent = 'Not configured';
+            }
+        }
+    }
+
     function loadSettings() {
         // In a real extension, this would load from VSCode settings
         const savedSettings = localStorage.getItem('savanna-settings');
