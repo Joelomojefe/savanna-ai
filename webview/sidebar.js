@@ -29,11 +29,11 @@
         sendButton = document.getElementById('sendButton');
         chatMessages = document.getElementById('chatMessages');
         loadingIndicator = document.getElementById('loadingIndicator');
-        statusDot = document.getElementById('statusDot');
-        providerName = document.getElementById('providerName');
-        switchProviderBtn = document.getElementById('switchProvider');
+        providerSelect = document.getElementById('provider-select');
+        currentModelSpan = document.getElementById('current-model');
+        newChatBtn = document.getElementById('new-chat');
+        clearChatBtn = document.getElementById('clear-chat');
         explainCodeBtn = document.getElementById('explainCode');
-        clearChatBtn = document.getElementById('clearChat');
     }
     
     function setupEventListeners() {
@@ -55,22 +55,42 @@
             updateSendButtonState();
         });
         
-        // Provider switching
-        switchProviderBtn.addEventListener('click', function() {
-            vscode.postMessage({ type: 'switchProvider' });
-        });
+        // Provider selection
+        if (providerSelect) {
+            providerSelect.addEventListener('change', function() {
+                if (providerSelect.value) {
+                    vscode.postMessage({
+                        type: 'switchProvider',
+                        provider: providerSelect.value
+                    });
+                }
+            });
+        }
         
-        // Explain selected code
-        explainCodeBtn.addEventListener('click', function() {
-            vscode.postMessage({ type: 'explainCode' });
-        });
+        // New chat
+        if (newChatBtn) {
+            newChatBtn.addEventListener('click', function() {
+                if (confirm('Start a new chat? This will clear the current conversation.')) {
+                    vscode.postMessage({ type: 'newChat' });
+                }
+            });
+        }
         
         // Clear chat
-        clearChatBtn.addEventListener('click', function() {
-            if (confirm('Clear all chat messages?')) {
-                vscode.postMessage({ type: 'clearChat' });
-            }
-        });
+        if (clearChatBtn) {
+            clearChatBtn.addEventListener('click', function() {
+                if (confirm('Clear all chat messages?')) {
+                    vscode.postMessage({ type: 'clearChat' });
+                }
+            });
+        }
+        
+        // Explain selected code
+        if (explainCodeBtn) {
+            explainCodeBtn.addEventListener('click', function() {
+                vscode.postMessage({ type: 'explainCode' });
+            });
+        }
     }
     
     function requestInitialState() {
