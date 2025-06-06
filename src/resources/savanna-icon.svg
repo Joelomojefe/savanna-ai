@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#backgroundGradient)" stroke="#4a5568" stroke-width="2"/>
+  
+  <!-- AI Brain/Neural network pattern -->
+  <g transform="translate(64,64)">
+    <!-- Central node -->
+    <circle cx="0" cy="0" r="8" fill="url(#accentGradient)" filter="url(#glow)"/>
+    
+    <!-- Surrounding nodes -->
+    <circle cx="-25" cy="-15" r="4" fill="#ffffff" opacity="0.9"/>
+    <circle cx="25" cy="-15" r="4" fill="#ffffff" opacity="0.9"/>
+    <circle cx="-30" cy="20" r="4" fill="#ffffff" opacity="0.9"/>
+    <circle cx="30" cy="20" r="4" fill="#ffffff" opacity="0.9"/>
+    <circle cx="0" cy="-35" r="4" fill="#ffffff" opacity="0.9"/>
+    <circle cx="0" cy="35" r="4" fill="#ffffff" opacity="0.9"/>
+    
+    <!-- Outer ring nodes -->
+    <circle cx="-20" cy="-30" r="3" fill="#e2e8f0" opacity="0.7"/>
+    <circle cx="20" cy="-30" r="3" fill="#e2e8f0" opacity="0.7"/>
+    <circle cx="-35" cy="0" r="3" fill="#e2e8f0" opacity="0.7"/>
+    <circle cx="35" cy="0" r="3" fill="#e2e8f0" opacity="0.7"/>
+    <circle cx="-15" cy="30" r="3" fill="#e2e8f0" opacity="0.7"/>
+    <circle cx="15" cy="30" r="3" fill="#e2e8f0" opacity="0.7"/>
+    
+    <!-- Connection lines -->
+    <line x1="0" y1="0" x2="-25" y2="-15" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <line x1="0" y1="0" x2="25" y2="-15" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <line x1="0" y1="0" x2="-30" y2="20" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <line x1="0" y1="0" x2="30" y2="20" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <line x1="0" y1="0" x2="0" y2="-35" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <line x1="0" y1="0" x2="0" y2="35" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    
+    <!-- Secondary connections -->
+    <line x1="-25" y1="-15" x2="-20" y2="-30" stroke="#e2e8f0" stroke-width="1" opacity="0.4"/>
+    <line x1="25" y1="-15" x2="20" y2="-30" stroke="#e2e8f0" stroke-width="1" opacity="0.4"/>
+    <line x1="-30" y1="20" x2="-35" y2="0" stroke="#e2e8f0" stroke-width="1" opacity="0.4"/>
+    <line x1="30" y1="20" x2="35" y2="0" stroke="#e2e8f0" stroke-width="1" opacity="0.4"/>
+    <line x1="-30" y1="20" x2="-15" y2="30" stroke="#e2e8f0" stroke-width="1" opacity="0.4"/>
+    <line x1="30" y1="20" x2="15" y2="30" stroke="#e2e8f0" stroke-width="1" opacity="0.4"/>
+  </g>
+  
+  <!-- Savanna text -->
+  <text x="64" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">SAVANNA</text>
+  
+  <!-- Code brackets accent -->
+  <text x="20" y="30" font-family="Monaco, monospace" font-size="16" font-weight="bold" fill="#ffffff" opacity="0.7">&lt;</text>
+  <text x="100" y="30" font-family="Monaco, monospace" font-size="16" font-weight="bold" fill="#ffffff" opacity="0.7">/&gt;</text>
+</svg>

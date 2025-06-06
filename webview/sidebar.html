@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savanna AI Sidebar</title>
+    <link rel="stylesheet" href="sidebar.css">
+    <style>
+        /* VSCode theme variables simulation for demo */
+        :root {
+            --vscode-foreground: #cccccc;
+            --vscode-sideBar-background: #252526;
+            --vscode-sideBarSectionHeader-background: #2d2d30;
+            --vscode-sideBarSectionHeader-border: #3e3e42;
+            --vscode-sideBarTitle-foreground: #cccccc;
+            --vscode-input-background: #3c3c3c;
+            --vscode-input-border: #3e3e42;
+            --vscode-input-foreground: #cccccc;
+            --vscode-input-placeholderForeground: #8c8c8c;
+            --vscode-button-background: #0e639c;
+            --vscode-button-foreground: #ffffff;
+            --vscode-button-border: #0e639c;
+            --vscode-button-hoverBackground: #1177bb;
+            --vscode-panel-background: #1e1e1e;
+            --vscode-panel-border: #3e3e42;
+            --vscode-editor-background: #1e1e1e;
+            --vscode-focusBorder: #007acc;
+            --vscode-toolbar-hoverBackground: #2a2d2e;
+            --vscode-icon-foreground: #c5c5c5;
+            --vscode-descriptionForeground: #9d9d9d;
+            --vscode-errorForeground: #f85149;
+            --vscode-testing-iconPassed: #73c991;
+            --vscode-progressBar-background: #0e639c;
+            --vscode-textLink-foreground: #3794ff;
+            --vscode-scrollbarSlider-background: rgba(121, 121, 121, 0.4);
+            --vscode-scrollbarSlider-hoverBackground: rgba(121, 121, 121, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-container">
+        <div class="header">
+            <div class="provider-status">
+                <div class="provider-indicator">
+                    <span class="status-dot connected" id="statusDot"></span>
+                    <span class="provider-name" id="providerName">OpenAI GPT-4</span>
+                </div>
+                <button class="icon-button" id="switchProvider" title="Switch Provider">
+                    <span class="codicon codicon-arrow-swap">⇄</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-section">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">
+                    <div class="message-header">
+                        <span class="message-role">Assistant</span>
+                        <span class="message-time">2:30 PM</span>
+                    </div>
+                    <div class="message-content">
+                        Hello! I'm Savanna AI, your code assistant. I can help you with:
+                        <br><br>
+                        • Code explanations and documentation
+                        <br>• Bug fixes and optimizations
+                        <br>• Architecture suggestions
+                        <br>• Best practices and patterns
+                        <br><br>
+                        Just select some code and ask me about it, or type your question below!
+                    </div>
+                </div>
+
+                <div class="message user">
+                    <div class="message-header">
+                        <span class="message-role">You</span>
+                        <span class="message-time">2:31 PM</span>
+                    </div>
+                    <div class="message-content">
+                        Can you explain how async/await works in JavaScript?
+                    </div>
+                </div>
+
+                <div class="message assistant">
+                    <div class="message-header">
+                        <span class="message-role">Assistant</span>
+                        <span class="message-time">2:31 PM</span>
+                    </div>
+                    <div class="message-content">
+                        <strong>Async/Await in JavaScript</strong>
+                        <br><br>
+                        Async/await is a syntax that makes it easier to work with Promises:
+                        <br><br>
+                        <pre><code>async function fetchData() {
+  try {
+    const response = await fetch('/api/data');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}</code></pre>
+                        <br>
+                        • <code>async</code> makes a function return a Promise
+                        <br>• <code>await</code> pauses execution until Promise resolves
+                        <br>• Much cleaner than Promise chains!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <textarea id="chatInput" placeholder="Ask Savanna AI..." rows="1">How do I optimize React performance?</textarea>
+                    <button id="sendButton" class="send-button">
+                        <span class="codicon codicon-send">→</span>
+                    </button>
+                </div>
+                <div class="input-actions">
+                    <button class="text-button" id="clearChat">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-indicator" id="loadingIndicator" style="display: flex;">
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span>AI is thinking...</span>
+        </div>
+    </div>
+
+    <script src="sidebar.js"></script>
+</body>
+</html>

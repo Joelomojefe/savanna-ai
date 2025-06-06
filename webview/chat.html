@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savanna AI Chat</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-header">
+            <h2>Savanna AI Chat</h2>
+            <div id="provider-info">
+                <select id="provider-select">
+                    <option value="">Select Provider...</option>
+                </select>
+                <span id="current-model"></span>
+            </div>
+            <div id="header-actions">
+                <button id="clear-chat" title="Clear chat history">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                    </svg>
+                    Clear
+                </button>
+            </div>
+        </div>
+        
+        <div id="chat-messages">
+            <div id="welcome-message" class="message system-message">
+                <div class="message-content">
+                    <h3>Welcome to Savanna AI Chat!</h3>
+                    <p>Ask questions about your code, request explanations, or get help with programming tasks.</p>
+                    <p>Tips:</p>
+                    <ul>
+                        <li>Select code in your editor and click "Explain Selected Code"</li>
+                        <li>Ask for code examples or debugging help</li>
+                        <li>Request documentation or code reviews</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="chat-input-container">
+            <div id="quick-actions">
+                <button id="explain-code" class="quick-action" title="Explain selected code">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    Explain Code
+                </button>
+                <button id="review-code" class="quick-action" title="Review selected code">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    Review Code
+                </button>
+            </div>
+            
+            <div id="input-wrapper">
+                <textarea 
+                    id="chat-input" 
+                    placeholder="Ask about your code..." 
+                    rows="3"
+                    maxlength="4000"
+                ></textarea>
+                <button id="send-button" title="Send message (Ctrl+Enter)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22,2 15,22 11,13 2,9 22,2"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="input-footer">
+                <span id="char-counter">0/4000</span>
+                <span id="typing-indicator" style="display: none;">AI is typing...</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="chat.js"></script>
+</body>
+</html>

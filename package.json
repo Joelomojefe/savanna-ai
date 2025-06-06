@@ -1,0 +1,179 @@
+{
+  "name": "savanna",
+  "displayName": "Savanna - Multi-Provider AI Code Assistant",
+  "description": "AI-powered code completion, suggestions, and chat assistance through multiple AI providers (OpenAI, Claude, Gemini, Cohere)",
+  "version": "1.0.0",
+  "publisher": "savanna",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Machine Learning",
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "code completion",
+    "chat",
+    "openai",
+    "claude",
+    "gemini",
+    "cohere",
+    "copilot",
+    "assistant"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "savanna.openSettings",
+        "title": "Open Settings",
+        "category": "Savanna"
+      },
+      {
+        "command": "savanna.openChat",
+        "title": "Open Chat",
+        "category": "Savanna"
+      },
+      {
+        "command": "savanna.switchProvider",
+        "title": "Switch Provider",
+        "category": "Savanna"
+      },
+      {
+        "command": "savanna.explainCode",
+        "title": "Explain Code",
+        "category": "Savanna"
+      },
+      {
+        "command": "savanna.generateDocs",
+        "title": "Generate Documentation",
+        "category": "Savanna"
+      },
+      {
+        "command": "savanna.toggleLogging",
+        "title": "Toggle Logging",
+        "category": "Savanna"
+      },
+      {
+        "command": "savanna.addApiKey",
+        "title": "Add API Key",
+        "category": "Savanna"
+      },
+      {
+        "command": "savanna.removeApiKey",
+        "title": "Remove API Key",
+        "category": "Savanna"
+      }
+    ],
+    "configuration": {
+      "title": "Savanna",
+      "properties": {
+        "savanna.defaultProvider": {
+          "type": "string",
+          "default": "openai",
+          "enum": [
+            "openai",
+            "gemini",
+            "claude",
+            "cohere"
+          ],
+          "description": "Default AI provider for completions and chat"
+        },
+        "savanna.enableLogging": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable logging of AI interactions"
+        },
+        "savanna.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Temperature for AI responses (0 = deterministic, 2 = very creative)"
+        },
+        "savanna.maxTokens": {
+          "type": "number",
+          "default": 150,
+          "minimum": 50,
+          "maximum": 4000,
+          "description": "Maximum tokens for completions"
+        },
+        "savanna.enableInlineCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable inline code completion suggestions"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "savanna.openChat",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c"
+      },
+      {
+        "command": "savanna.explainCode",
+        "key": "ctrl+alt+e",
+        "mac": "cmd+alt+e",
+        "when": "editorHasSelection"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "savanna.explainCode",
+          "when": "editorHasSelection",
+          "group": "savanna"
+        },
+        {
+          "command": "savanna.generateDocs",
+          "when": "editorHasSelection",
+          "group": "savanna"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "savanna.explainCode",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "savanna.generateDocs",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "savanna.providersView",
+          "name": "Savanna Providers",
+          "icon": "resources/savanna-icon.svg"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.53.0",
+    "@google/generative-ai": "^0.24.1",
+    "@types/node": "^22.15.30",
+    "@types/vscode": "^1.100.0",
+    "cohere-ai": "^7.17.1",
+    "openai": "^5.1.1",
+    "typescript": "^5.8.3",
+    "vsce": "^2.15.0"
+  }
+}

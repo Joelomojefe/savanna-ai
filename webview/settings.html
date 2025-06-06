@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savanna Settings</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <div class="settings-container">
+        <header class="settings-header">
+            <div class="header-content">
+                <div class="header-info">
+                    <h1>Savanna AI Settings</h1>
+                    <p>Configure your AI providers and preferences</p>
+                </div>
+                <div class="theme-toggle-container">
+                    <label class="theme-toggle">
+                        <input type="checkbox" id="theme-toggle" />
+                        <span class="toggle-slider">
+                            <span class="toggle-icon sun">☀️</span>
+                            <span class="toggle-icon moon">🌙</span>
+                        </span>
+                    </label>
+                    <span class="theme-label">Dark Mode</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="settings-section">
+            <h2>AI Providers</h2>
+            <p>Add your API keys for different AI providers. Keys are stored securely using VSCode's secret storage.</p>
+            
+            <div class="providers-grid">
+                <div class="provider-card" data-provider="openai">
+                    <div class="provider-header">
+                        <h3>OpenAI</h3>
+                        <div class="provider-status" id="openai-status">
+                            <span class="status-indicator"></span>
+                            <span class="status-text">Not configured</span>
+                        </div>
+                    </div>
+                    
+                    <div class="provider-content">
+                        <div class="form-group">
+                            <label for="openai-key">API Key</label>
+                            <div class="input-group">
+                                <input 
+                                    type="password" 
+                                    id="openai-key" 
+                                    placeholder="sk-..." 
+                                    class="api-key-input"
+                                >
+                                <button type="button" class="toggle-visibility" data-target="openai-key">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="openai-model">Model</label>
+                            <select id="openai-model">
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gpt-4-turbo-preview">GPT-4 Turbo</option>
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="provider-actions">
+                            <button class="btn btn-primary save-key" data-provider="openai">Save</button>
+                            <button class="btn btn-secondary test-key" data-provider="openai">Test</button>
+                            <button class="btn btn-danger remove-key" data-provider="openai">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="provider-card" data-provider="gemini">
+                    <div class="provider-header">
+                        <h3>Google Gemini</h3>
+                        <div class="provider-status" id="gemini-status">
+                            <span class="status-indicator"></span>
+                            <span class="status-text">Not configured</span>
+                        </div>
+                    </div>
+                    
+                    <div class="provider-content">
+                        <div class="form-group">
+                            <label for="gemini-key">API Key</label>
+                            <div class="input-group">
+                                <input 
+                                    type="password" 
+                                    id="gemini-key" 
+                                    placeholder="AIza..." 
+                                    class="api-key-input"
+                                >
+                                <button type="button" class="toggle-visibility" data-target="gemini-key">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gemini-model">Model</label>
+                            <select id="gemini-model">
+                                <option value="gemini-pro">Gemini Pro</option>
+                                <option value="gemini-pro-vision">Gemini Pro Vision</option>
+                            </select>
+                        </div>
+                        
+                        <div class="provider-actions">
+                            <button class="btn btn-primary save-key" data-provider="gemini">Save</button>
+                            <button class="btn btn-secondary test-key" data-provider="gemini">Test</button>
+                            <button class="btn btn-danger remove-key" data-provider="gemini">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="provider-card" data-provider="claude">
+                    <div class="provider-header">
+                        <h3>Anthropic Claude</h3>
+                        <div class="provider-status" id="claude-status">
+                            <span class="status-indicator"></span>
+                            <span class="status-text">Not configured</span>
+                        </div>
+                    </div>
+                    
+                    <div class="provider-content">
+                        <div class="form-group">
+                            <label for="claude-key">API Key</label>
+                            <div class="input-group">
+                                <input 
+                                    type="password" 
+                                    id="claude-key" 
+                                    placeholder="sk-ant-..." 
+                                    class="api-key-input"
+                                >
+                                <button type="button" class="toggle-visibility" data-target="claude-key">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="claude-model">Model</label>
+                            <select id="claude-model">
+                                <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                                <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
+                                <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
+                            </select>
+                        </div>
+                        
+                        <div class="provider-actions">
+                            <button class="btn btn-primary save-key" data-provider="claude">Save</button>
+                            <button class="btn btn-secondary test-key" data-provider="claude">Test</button>
+                            <button class="btn btn-danger remove-key" data-provider="claude">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="provider-card" data-provider="cohere">
+                    <div class="provider-header">
+                        <h3>Cohere</h3>
+                        <div class="provider-status" id="cohere-status">
+                            <span class="status-indicator"></span>
+                            <span class="status-text">Not configured</span>
+                        </div>
+                    </div>
+                    
+                    <div class="provider-content">
+                        <div class="form-group">
+                            <label for="cohere-key">API Key</label>
+                            <div class="input-group">
+                                <input 
+                                    type="password" 
+                                    id="cohere-key" 
+                                    placeholder="..." 
+                                    class="api-key-input"
+                                >
+                                <button type="button" class="toggle-visibility" data-target="cohere-key">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cohere-model">Model</label>
+                            <select id="cohere-model">
+                                <option value="command">Command</option>
+                                <option value="command-light">Command Light</option>
+                                <option value="command-nightly">Command Nightly</option>
+                            </select>
+                        </div>
+                        
+                        <div class="provider-actions">
+                            <button class="btn btn-primary save-key" data-provider="cohere">Save</button>
+                            <button class="btn btn-secondary test-key" data-provider="cohere">Test</button>
+                            <button class="btn btn-danger remove-key" data-provider="cohere">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <h2>General Settings</h2>
+            
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label for="default-provider">Default Provider</label>
+                    <select id="default-provider">
+                        <option value="openai">OpenAI</option>
+                        <option value="gemini">Google Gemini</option>
+                        <option value="claude">Anthropic Claude</option>
+                        <option value="cohere">Cohere</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="temperature">Temperature</label>
+                    <div class="range-group">
+                        <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+                        <span class="range-value">0.7</span>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="max-tokens">Max Tokens</label>
+                    <div class="range-group">
+                        <input type="range" id="max-tokens" min="50" max="4000" step="50" value="150">
+                        <span class="range-value">150</span>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enable-logging">
+                        <span class="checkmark"></span>
+                        Enable Interaction Logging
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enable-completion">
+                        <span class="checkmark"></span>
+                        Enable Inline Code Completion
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <footer class="settings-footer">
+            <button class="btn btn-primary" id="save-settings">Save All Settings</button>
+            <button class="btn btn-secondary" id="reset-settings">Reset to Defaults</button>
+        </footer>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>
