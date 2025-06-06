@@ -157,20 +157,60 @@ export class ChatProvider {
             <div id="chat-container">
                 <div id="chat-header">
                     <h2>Savanna AI Chat</h2>
-                    <div id="provider-selector">
+                    <div id="provider-info">
                         <select id="provider-select">
                             <option value="">Select Provider...</option>
                         </select>
+                        <span id="current-model"></span>
                     </div>
-                    <button id="clear-chat">Clear</button>
+                    <div id="header-actions">
+                        <button id="clear-chat" title="Clear chat history">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                            </svg>
+                            Clear
+                        </button>
+                    </div>
                 </div>
-                <div id="chat-messages"></div>
+                
+                <div id="chat-messages">
+                    <div id="welcome-message" class="message system-message">
+                        <div class="message-content">
+                            <h3>Welcome to Savanna AI Chat!</h3>
+                            <p>Ask questions about your code, request explanations, or get help with programming tasks.</p>
+                            <p>Tips:</p>
+                            <ul>
+                                <li>Select code in your editor and click "Explain Selected Code"</li>
+                                <li>Ask for code examples or debugging help</li>
+                                <li>Request documentation or code reviews</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
                 <div id="chat-input-container">
-                    <textarea id="chat-input" placeholder="Ask about your code..."></textarea>
-                    <button id="send-button">Send</button>
-                    <button id="explain-code">Explain Selected Code</button>
+                    <div id="input-wrapper">
+                        <textarea 
+                            id="chat-input" 
+                            placeholder="Ask about your code..." 
+                            rows="3"
+                            maxlength="4000"
+                        ></textarea>
+                        <button id="send-button" title="Send message (Ctrl+Enter)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22,2 15,22 11,13 2,9 22,2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div id="input-footer">
+                        <span id="char-counter">0/4000</span>
+                        <span id="typing-indicator" style="display: none;">AI is typing...</span>
+                    </div>
                 </div>
             </div>
+            
             <script src="${webviewUri('chat.js')}"></script>
         </body>
         </html>`;
