@@ -11,6 +11,8 @@ const server = http.createServer((req, res) => {
         serveFile(res, 'sidebar-demo.html', 'text/html');
     } else if (req.url === '/settings-enhanced' || req.url === '/settings-enhanced.html') {
         serveFile(res, 'webview/settings-enhanced.html', 'text/html');
+    } else if (req.url === '/chat' || req.url === '/chat.html') {
+        serveFile(res, 'webview/chat.html', 'text/html');
     } else if (req.url === '/download-page') {
         serveFile(res, 'download-page.html', 'text/html');
     } else if (req.url === '/settings-enhanced.css') {
